@@ -12,10 +12,15 @@
 #include "client_handler.h"
 
 static int running = 1;
+static int server_fd_global = -1;
+
 void handle_sigint(int sig) {
     (void)sig;
     printf("\n[server] Cerrando servidor...\n");
     running = 0;
+    if (server_fd_global != 1) {
+        close(server_fd_global);
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -40,6 +45,7 @@ int main(int argc, char* argv[]) {
 
     // Crea socket del servidor.
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    server_fd_global = server_fd;
     if (server_fd < 0) {
         perror("[server] Error al crear socket");
         return 1;
