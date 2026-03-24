@@ -37,12 +37,6 @@ void broadcast_packet(uint8_t command, const char* sender,
                       const char* target, const char* payload,
                       int exclude_fd) {
 
-    pthread_mutex_lock(&users_mutex);
-
-    extern User* head;
-
-    pthread_mutex_unlock(&users_mutex);
-
     char buffer[957];
     int count = list_users(buffer, sizeof(buffer));
     if (count == 0) return;
