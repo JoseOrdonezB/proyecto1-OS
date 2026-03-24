@@ -1,0 +1,29 @@
+# Ejecutables compilados
+server
+client
+
+# Archivos objeto
+*.o
+*.out
+
+# Archivos generados por el compilador
+*.a
+*.so
+
+# Archivos de debug
+*.dSYM/
+core
+
+# Llaves SSH de AWS (importante nunca subir esto)
+*.pem
+*.key
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de editores
+.vscode/
+.idea/
+*.swp
+*.swo
