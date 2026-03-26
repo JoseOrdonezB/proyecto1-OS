@@ -1,26 +1,33 @@
-CC     = gcc
-FLAGS  = -Wall -Wextra -pthread
-COMMON = ../common/protocol.h
+CC      = gcc
+FLAGS   = -Wall -Wextra -pthread
+COMMON_DIR = ../common
+CLIENT_DIR = ../client
+INCLUDES   = -I$(COMMON_DIR) -I$(CLIENT_DIR)
 
-# ── Archivos fuente del servidor ──
+# --- Archivos fuente ---
 SERVER_SRC = server.c client_handler.c user_list.c
-SERVER_OUT = server
+# Agregamos los archivos del cliente uno por uno para rastrear el error
+C1 = $(CLIENT_DIR)/client.c
+C2 = $(CLIENT_DIR)/receiver.c
+C3 = $(CLIENT_DIR)/ui.c
 
-# ── Directorios de includes ──
-INCLUDES = -I../common
+all: check_files server_exe client_exe
 
-# ────────────────────────────────────────────────────────────────────────────
+# Esta regla nos dirá si los archivos existen antes de intentar compilar
+check_files:
+	@ls $(C1) > /dev/null || echo " ERROR: No se encuentra $(C1)"
+	@ls $(C2) > /dev/null || echo " ERROR: No se encuentra $(C2)"
+	@ls $(C3) > /dev/null || echo " ERROR: No se encuentra $(C3)"
 
-all: $(SERVER_OUT)
+server_exe: $(SERVER_SRC)
+	$(CC) $(FLAGS) $(INCLUDES) -o server_exe $(SERVER_SRC)
 
-$(SERVER_OUT): $(SERVER_SRC) $(COMMON)
-	$(CC) $(FLAGS) $(INCLUDES) -o $(SERVER_OUT) $(SERVER_SRC)
+client_exe: $(C1) $(C2) $(C3)
+	$(CC) $(FLAGS) $(INCLUDES) -o client_exe $(C1) $(C2) $(C3)
 
-# ── Limpia el ejecutable ──
 clean:
-	rm -f $(SERVER_OUT)
+	rm -f server_exe client_exe
 
-# ── Recompila desde cero ──
 re: clean all
 
-.PHONY: all clean re
+.PHONY: all clean re check_files
