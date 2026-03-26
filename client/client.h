@@ -1,7 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 #include <stdint.h>
-#include "protocol.h"
+#include "../common/protocol.h"
 extern int sockfd;
 extern char my_username[32];
 extern int running;
